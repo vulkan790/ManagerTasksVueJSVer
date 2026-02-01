@@ -1,29 +1,47 @@
-# ManagerTasksVueJSVer
+# Task Manager (Vue.js)
 
-This template should help get you started developing with Vue 3 in Vite.
+Простое приложение для управления задачами, созданное на Vue.js. Позволяет добавлять, просматривать и удалять задачи с интуитивно понятным интерфейсом.
 
-## Recommended IDE Setup
+## Особенности
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- **Добавление новых задач с валидацией пустого ввода**
+- **Удаление задач в один клик**
+- **Счётчик задач**
+- **Интуитивно понятный UI/UX**
 
-## Customize configuration
+## Быстрый старт
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+### Предварительные требования
+- **Node.js (версия 16 или выше)**
+- **npm или yarn**
 
-## Project Setup
+### Установка и запуск
 
+1. **Клонируйте репозиторий**
+
+```sh
+git clone https://github.com/vulkan790/ManagerTasksVueJSVer.git
+cd ManagerTasksVueJSVer
+```
+
+2. **Установите зависимости**
 ```sh
 npm install
 ```
-
-### Compile and Hot-Reload for Development
-
+3. **Запустите в режиме разработки**
 ```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+4. **Откройте в браузере**
 
+5. **Сборка для production**
 ```sh
 npm run build
 ```
+
+## Используемые технологии
+
+- **Frontend:** Vue.js
+- **Базовая вёрстка:** HTML/CSS
+- **Сборка:** Vite
