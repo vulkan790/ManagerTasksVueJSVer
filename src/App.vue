@@ -1,5 +1,5 @@
 <script>
-import { ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import AddTaskForm from './components/AddTaskForm.vue'
 import TaskList from './components/TaskList.vue'
 
@@ -10,10 +10,29 @@ export default {
     TaskList
   },
   setup() {
-    const tasks = ref([
-      { id: '1', text: 'Почитать книгу' },
-      { id: '2', text: 'Сходить в спортзал' }
-    ])
+    const loadTasks = () => {
+      const saved = localStorage.getItem("tasks")
+      if (saved)
+      {
+        try 
+        {
+          return JSON.parse(saved)
+        } 
+        catch
+        {
+          return [
+            { id: '1', text: 'Почитать книгу' },
+            { id: '2', text: 'Сходить в спортзал' }
+          ]
+        }
+      }
+      return [
+        { id: '1', text: 'Почитать книгу' },
+        { id: '2', text: 'Сходить в спортзал' }
+      ]
+    }
+
+    const tasks = ref(loadTasks())
 
     const handleAddTask = (newTask) => {
       tasks.value.push(newTask)
@@ -22,6 +41,14 @@ export default {
     const handleDeleteTask = (taskId) => {
       tasks.value = tasks.value.filter(task => task.id !== taskId)
     }
+
+    const saveTasks = () => {
+      localStorage.setItem("tasks", JSON.stringify(tasks.value))
+    }
+
+    watch(tasks, saveTasks, { deep: true })
+
+    onMounted(() => saveTasks())
 
     return {
       tasks,
