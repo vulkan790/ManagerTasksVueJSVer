@@ -10,45 +10,63 @@ export default {
     TaskList
   },
   setup() {
-    const loadTasks = () => {
-      const saved = localStorage.getItem("tasks")
-      if (saved)
+    const tasks = ref([])
+
+    const fetchTasks = async () => {
+      try
       {
-        try 
-        {
-          return JSON.parse(saved)
-        } 
-        catch
-        {
-          return [
-            { id: '1', text: 'Почитать книгу' },
-            { id: '2', text: 'Сходить в спортзал' }
-          ]
-        }
+        const responce = await fetch("http://localhost:8000/tasks")
+        if (!responce.ok)
+          throw new Error("Ошибка загрузки")
+        tasks.value = await responce.json()
       }
-      return [
-        { id: '1', text: 'Почитать книгу' },
-        { id: '2', text: 'Сходить в спортзал' }
-      ]
+      catch (e)
+      {
+        console.error("Не удалось загрузить задачи: ", e)
+        tasks.value = []
+      }
     }
 
-    const tasks = ref(loadTasks())
-
-    const handleAddTask = (newTask) => {
-      tasks.value.push(newTask)
+    const handleAddTask = async (taskText) => {
+      try
+      {
+        const responce = await fetch("http://localhost:8000/tasks", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ text: taskText })
+        })
+        if (!responce.ok)
+          throw new Error("Ошибка добавления")
+        const newTask = await responce.json()
+        tasks.value.push(newTask)
+      }
+      catch (e)
+      {
+        console.error("Не удалось добавить задачу: ", e)
+        alert("Не удалось добавить задачу, попробуйте позже")
+      }
     }
 
-    const handleDeleteTask = (taskId) => {
-      tasks.value = tasks.value.filter(task => task.id !== taskId)
+    const handleDeleteTask = async (taskId) => {
+      try
+      {
+        const responce = await fetch(`http://localhost:8000/tasks/${taskId}`, {
+          method: "DELETE"
+        })
+        if (!responce.ok)
+          throw new Error("Ошибка удаления")
+        tasks.value = tasks.value.filter(task => task.id !== taskId)
+      }
+      catch (e)
+      {
+        console.error("Не удалось удалить задачу: ", e)
+        alert("Не удалось удалить задачу, попробуйте позже")
+      }
     }
 
-    const saveTasks = () => {
-      localStorage.setItem("tasks", JSON.stringify(tasks.value))
-    }
-
-    watch(tasks, saveTasks, { deep: true })
-
-    onMounted(() => saveTasks())
+    onMounted(fetchTasks)
 
     return {
       tasks,

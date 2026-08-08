@@ -11,7 +11,7 @@ export default {
             e.preventDefault()
             if (newTask.value.trim()) 
             {
-                emit('add-task', { id: Date.now().toString(), text: newTask.value.trim() })
+                emit('add-task', newTask.value.trim())
                 newTask.value = ''
             }
         }
