@@ -44,12 +44,12 @@ async def getTask(task_id: str) -> Task:
             return task
     raise HTTPException(status_code=404, detail="Задача не найдена")
 
-@app.delete("/tasks", status_code=201)
+@app.delete("/tasks", status_code=200)
 async def deleteAllTasks() -> Dict:
     tasks_db.clear()
     return {"detail": "Все задачи удалены"}
 
-@app.delete("/tasks/{task_id}", status_code=201)
+@app.delete("/tasks/{task_id}", status_code=200)
 async def deleteTask(task_id: str) -> Dict:
     for i, task in enumerate(tasks_db):
         if task.id == task_id:
